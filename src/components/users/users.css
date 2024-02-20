@@ -1,0 +1,11 @@
+.loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.loading h2 {
+    font-size: 24px;
+    color: #333;
+}
