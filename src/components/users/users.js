@@ -22,7 +22,7 @@ const Users = () => {
     const [open, setOpen] = useState(false);
     const [allUsersLoaded, setAllUsersLoaded] = useState(false);
 
-
+    // fetching user Data
     const fetchData = async () => {
         setLoading(true);
         try {
@@ -45,12 +45,13 @@ const Users = () => {
         }
     };
 
-
+    // watching page changes
     useEffect(() => {
         if (page > 1) {
             fetchData();
         }
     }, [page]);
+
 
     const handleScroll = () => {
         if (
@@ -61,6 +62,7 @@ const Users = () => {
         }
     };
 
+    // watching scroll 
     useEffect(() => {
         setTimeout(() => {
             fetchData()
@@ -76,6 +78,49 @@ const Users = () => {
         setOpen(false);
     };
 
+    //UserList Template
+    const userList = <div>
+        <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
+            {users.map((user, index) => (
+                <div key={index}>
+                    <ListItem sx={{ maxWidth: 'xl' }} alignItems="flex-start" >
+                        <ListItemAvatar>
+                            <Avatar alt={user.avatar} src={user.avatar} />
+                        </ListItemAvatar>
+                        <ListItemText
+                            primary={user.first_name + +user.last_name}
+                            secondary={
+                                <React.Fragment>
+                                    <Typography
+                                        sx={{ display: 'inline' }}
+                                        component="span"
+                                        variant="body2"
+                                        color="text.primary"
+                                    >
+                                        {user.email}
+                                    </Typography>
+                                </React.Fragment>
+                            }
+                        />
+                    </ListItem>
+                    <Divider variant="inset" component="li" />
+                </div>
+            ))}
+        </List>
+
+    </div>
+
+    //Dialogbox template
+    const noUserDialog = <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>No Users Available</DialogTitle>
+        <DialogContent>
+            <p>There are no users available.</p>
+        </DialogContent>
+        <DialogActions>
+            <Button onClick={handleClose} color="primary">Close</Button>
+        </DialogActions>
+    </Dialog>
+
     return (
 
         <div>
@@ -84,42 +129,8 @@ const Users = () => {
             ) : (
                 <div>
                     <h1>User List</h1>
-                    <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
-                        {users.map((user, index) => (
-                            <div key={index}>
-                                <ListItem sx={{ maxWidth: 'xl' }} alignItems="flex-start" >
-                                    <ListItemAvatar>
-                                        <Avatar alt={user.avatar} src={user.avatar} />
-                                    </ListItemAvatar>
-                                    <ListItemText
-                                        primary={user.first_name + +user.last_name}
-                                        secondary={
-                                            <React.Fragment>
-                                                <Typography
-                                                    sx={{ display: 'inline' }}
-                                                    component="span"
-                                                    variant="body2"
-                                                    color="text.primary"
-                                                >
-                                                    {user.email}
-                                                </Typography>
-                                            </React.Fragment>
-                                        }
-                                    />
-                                </ListItem>
-                                <Divider variant="inset" component="li" />
-                            </div>
-                        ))}
-                    </List>
-                    <Dialog open={open} onClose={handleClose}>
-                        <DialogTitle>No Users Available</DialogTitle>
-                        <DialogContent>
-                            <p>There are no users available.</p>
-                        </DialogContent>
-                        <DialogActions>
-                            <Button onClick={handleClose} color="primary">Close</Button>
-                        </DialogActions>
-                    </Dialog>
+                    {userList}
+                    {noUserDialog}
                 </div>
             )}
         </div>
