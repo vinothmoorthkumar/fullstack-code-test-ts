@@ -1,4 +1,19 @@
-body{
-    width: 1120px;
-    margin: auto;
+.container {
+    width: 100%;
+    max-width: 1200px; /* Default maximum width */
+    margin: 0 auto; /* Center the container horizontally */
+}
+
+/* Media query for devices with a maximum width of 768px (e.g., tablets) */
+@media (max-width: 768px) {
+    .container {
+        max-width: 768px;
+    }
+}
+
+/* Media query for devices with a maximum width of 576px (e.g., smartphones) */
+@media (max-width: 576px) {
+    .container {
+        max-width: 576px;
+    }
 }
