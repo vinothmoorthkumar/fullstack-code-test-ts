@@ -6,16 +6,16 @@ const Users = () => {
     // const [isLoading, setIsLoading] = useState(true);
 
     // setTimeout(() => {
-    //     setIsLoading(false);
+    //     setLoading(false);
     // }, 3000);
 
     // return (
     //     <div>
-    //         {isLoading ? (
-    //             <Loading />
-    //         ) : (
-    //             <h1>Content Loaded</h1>
-    //         )}
+    // {loading ? (
+    //     <Loading />
+    // ) : (
+    //     <h1>Content Loaded</h1>
+    // )}
     //     </div>
     // );
 
@@ -24,15 +24,25 @@ const Users = () => {
 
     const [users, setUsers] = useState([]);
     const [page, setPage] = useState(1);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const loader = useRef(null);
+
+
+    setTimeout(() => {
+        setLoading(false);
+        loadMoreUsers();
+    }, 3000);
 
     const loadMoreUsers = async () => {
         setLoading(true);
-        const data = await apiService.fetchUsers(page, 20); 
-        setUsers((prevUsers) => [...prevUsers, ...data.data]);
-        setPage((prevPage) => prevPage + 1);
-        setLoading(false);
+        const data = await apiService.fetchUsers(page, 20);
+        if(data?.data.length===0){
+            setLoading(false);
+        }else{
+            setUsers((prevUsers) => [...prevUsers, ...data.data]);
+            setPage((prevPage) => prevPage + 1);
+            setLoading(false);
+        }
     };
 
     useEffect(() => {
@@ -44,7 +54,6 @@ const Users = () => {
 
         const observer = new IntersectionObserver((entries) => {
             if (entries[0].isIntersecting) {
-                console.log("ttttttt")
                 loadMoreUsers();
             }
         }, options);
@@ -62,14 +71,22 @@ const Users = () => {
 
     return (
         <div>
-            <h1>User List</h1>
-            <ul>
-                {users.map((user, index) => (
-                    <li key={index}>{user.first_name}</li>
-                ))}
-            </ul>
-            {loading && <p>Loading...</p>}
-            <div ref={loader}></div>
+
+            {loading ? (
+                <Loading />
+            ) : (
+                <div>
+                    <h1>User List</h1>
+                    <ul>
+                        {users.map((user, index) => (
+                            <li key={index}>{user.first_name}</li>
+                        ))}
+                    </ul>
+                    <div ref={loader}></div>
+                </div>
+            )}
+
+
         </div>
     );
 }
