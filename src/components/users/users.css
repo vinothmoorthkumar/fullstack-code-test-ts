@@ -9,3 +9,9 @@
     font-size: 24px;
     color: #333;
 }
+
+.container {
+    width: 1200px;
+    padding: 10px;
+    margin: auto;
+}
