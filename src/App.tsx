@@ -1,5 +1,6 @@
 import React from 'react';
 import Users from './components/users/users';
+import "./App.css";
 
 const App = () => {
     return (
